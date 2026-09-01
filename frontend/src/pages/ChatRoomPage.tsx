@@ -100,11 +100,11 @@ export default function ChatRoomPage() {
   );
 
   return (
-    <div className="flex h-screen flex-col bg-gray-50 dark:bg-gray-950">
-      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900">
+    <div className="flex h-screen flex-col bg-slate-50 dark:bg-gray-950">
+      <header className="flex items-center justify-between border-b border-gray-200/80 bg-white/95 px-4 py-3 shadow-sm backdrop-blur dark:border-gray-800 dark:bg-gray-900/95">
         <div className="min-w-0">
           <h1 className="truncate font-semibold text-gray-900 dark:text-gray-100">{guestSession.roomName}</h1>
-          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
             <span className={`h-1.5 w-1.5 rounded-full ${connected ? 'bg-emerald-500' : 'bg-gray-300'}`} />
             {connected ? 'Connected' : 'Connecting...'} · {guestSession.roomCode}
           </div>
@@ -133,7 +133,7 @@ export default function ChatRoomPage() {
 
       <div className="flex flex-1 overflow-hidden">
         <div className="flex flex-1 flex-col overflow-hidden">
-          <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+          <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.06),_transparent_42%)] px-4 py-6 sm:px-8">
             {!historyLoaded && <p className="text-center text-sm text-gray-400">Loading messages...</p>}
             {historyLoaded && messages.length === 0 && (
               <p className="mt-10 text-center text-sm text-gray-400">

@@ -37,8 +37,11 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   // Own  → blue  (#1f3ce6 brand)
   // Other → green (#16a34a / emerald-600)
   const bubbleClass = isOwn
-    ? 'bg-brand-600 text-white rounded-br-sm'
-    : 'bg-emerald-500 text-white rounded-bl-sm';
+    ? 'bg-brand-600 text-white rounded-br-md shadow-[0_8px_24px_rgba(31,60,230,0.18)]'
+    : 'border border-gray-200 bg-white text-gray-800 rounded-bl-md shadow-[0_6px_20px_rgba(15,23,42,0.06)] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100';
+  const timestampClass = isOwn
+    ? 'text-gray-400 dark:text-gray-500'
+    : 'text-gray-400 dark:text-gray-500';
 
   // ── Image message ────────────────────────────────────────────────────────────
   if (message.message_type === 'image' && message.file_url) {
@@ -62,7 +65,7 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
             <p className="px-2 pb-1 pt-0.5 text-[11px] opacity-80 truncate">{message.file_name}</p>
           )}
         </div>
-        <span className="mt-1 px-1 text-[11px] text-gray-400 dark:text-gray-500">
+        <span className={`mt-1 px-1 text-[11px] ${timestampClass}`}>
           {format(new Date(message.created_at), 'h:mm a')}
         </span>
       </div>
@@ -83,7 +86,7 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
           target="_blank"
           rel="noopener noreferrer"
           download={message.file_name ?? true}
-          className={`flex items-center gap-3 max-w-[75%] sm:max-w-[55%] rounded-2xl px-4 py-3 shadow-sm
+          className={`flex items-center gap-3 max-w-[82%] sm:max-w-[55%] rounded-2xl px-4 py-3
             hover:opacity-90 transition-opacity ${bubbleClass}`}
         >
           <FileIcon />
@@ -100,7 +103,7 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
         </a>
-        <span className="mt-1 px-1 text-[11px] text-gray-400 dark:text-gray-500">
+        <span className={`mt-1 px-1 text-[11px] ${timestampClass}`}>
           {format(new Date(message.created_at), 'h:mm a')}
         </span>
       </div>
@@ -115,10 +118,10 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
           {message.sender_name}
         </span>
       )}
-      <div className={`max-w-[75%] break-words rounded-2xl px-4 py-2.5 text-sm shadow-sm sm:max-w-[65%] ${bubbleClass}`}>
-        {message.content}
+      <div className={`max-w-[82%] break-words rounded-2xl px-4 py-3 text-[15px] leading-relaxed sm:max-w-[65%] ${bubbleClass}`}>
+        <p className="whitespace-pre-wrap">{message.content}</p>
       </div>
-      <span className="mt-1 px-1 text-[11px] text-gray-400 dark:text-gray-500">
+      <span className={`mt-1 px-1 text-[11px] ${timestampClass}`}>
         {format(new Date(message.created_at), 'h:mm a')}
       </span>
     </div>
