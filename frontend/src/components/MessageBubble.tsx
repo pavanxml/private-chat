@@ -12,6 +12,15 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function isEmojiOnly(content: string): boolean {
+  const trimmed = content.trim();
+  return Boolean(
+    trimmed &&
+      /\p{Extended_Pictographic}/u.test(trimmed) &&
+      /^(?:[\p{Extended_Pictographic}\p{Regional_Indicator}\p{Emoji_Modifier}\uFE0F\u200D\u20E3]|\s)+$/u.test(trimmed)
+  );
+}
+
 function FileIcon() {
   return (
     <svg className="h-8 w-8 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -111,6 +120,28 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   }
 
   // ── Plain text message ───────────────────────────────────────────────────────
+  if (isEmojiOnly(message.content)) {
+    return (
+      <div className={`flex flex-col animate-fade-in ${isOwn ? 'items-end' : 'items-start'}`}>
+        {!isOwn && (
+          <span className="mb-1 ml-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+            {message.sender_name}
+          </span>
+        )}
+        <div
+          className="px-1 py-0.5 text-[3.5rem] leading-[1.1] tracking-tight drop-shadow-sm sm:text-[4.25rem]"
+          role="img"
+          aria-label={message.content}
+        >
+          {message.content}
+        </div>
+        <span className={`mt-1 rounded-full px-2 py-0.5 text-[11px] ${timestampClass}`}>
+          {format(new Date(message.created_at), 'h:mm a')}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex flex-col animate-fade-in ${isOwn ? 'items-end' : 'items-start'}`}>
       {!isOwn && (
