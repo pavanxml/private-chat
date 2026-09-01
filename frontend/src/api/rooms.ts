@@ -67,7 +67,10 @@ export async function removeUser(roomId: number, socketId: string) {
 export async function getRoomMessages(roomId: number, asAdmin: boolean) {
   const base = asAdmin ? `/rooms/${roomId}/messages` : `/guest/rooms/${roomId}/messages`;
   const res = await client.get<ApiResponse<ChatMessage[]>>(base);
-  return res.data.data as ChatMessage[];
+  // A stale session or an empty/recreated database can return a valid response
+  // without a message array. Keep the chat view usable instead of spreading a
+  // non-iterable value during page hydration.
+  return Array.isArray(res.data.data) ? (res.data.data as ChatMessage[]) : [];
 }
 
 export async function uploadFile(roomId: number, file: File): Promise<ChatMessage> {

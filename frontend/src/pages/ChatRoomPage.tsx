@@ -54,7 +54,7 @@ export default function ChatRoomPage() {
     (async () => {
       try {
         const history = await getRoomMessages(guestSession.roomId, false);
-        setMessages((prev) => [...history, ...prev]);
+        setMessages((prev) => [...(Array.isArray(history) ? history : []), ...prev]);
       } catch (err) {
         showToast(extractErrorMessage(err), 'error');
       } finally {
